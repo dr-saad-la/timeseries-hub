@@ -9,14 +9,12 @@ synthetic time series data with various patterns and characteristics.
 **Project**: timeseries-hub
 **License**: MIT
 """
-from datetime import datetime
-
 from abc import ABC
 from abc import abstractmethod
+from datetime import datetime
 from typing import Any
 from typing import Dict
 from typing import Optional
-from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -114,8 +112,8 @@ class TimeSeriesGenerator(ABC):
 		self.rng = np.random.RandomState(seed)
 		return self
 	
-	def _create_datetime_index(self, n_points: int,
-	                           start_date: Optional[str] =None,
+	@staticmethod
+	def _create_datetime_index(n_points: int, start_date: Optional[str] = None,
 	                           freq: str = "D") -> pd.DatetimeIndex:
 		"""
 		Create datetime index for time series.
@@ -136,11 +134,11 @@ class TimeSeriesGenerator(ABC):
 		"""
 		if start_date is None:
 			start_date = f"{datetime.now().year}-01-01"
-			
+		
 		return pd.date_range(start_date, periods=n_points, freq=freq)
 
 
-class BaseNoiseGenerator(TimeSeriesGenerator):
+class BaseNoiseGenerator(TimeSeriesGenerator, ABC):
 	"""
 	Base class for noise generators.
 
